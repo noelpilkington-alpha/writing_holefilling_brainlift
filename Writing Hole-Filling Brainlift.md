@@ -456,6 +456,31 @@ Some G3-5 errors — particularly those involving figurative language interpreta
 
 ---
 
+### Decision Process Overview *(Added v1.4)*
+
+This is a high-level map of the decision logic. Full implementation details, including keyword triggers, scaffold sequences, and constraint enforcement, are in the **Writing Automation Rules** document.
+
+**Step 1 — Determine the scenario.** Is this a same-grade test failure (student tested on their current grade and scored below proficiency) or a test-out failure (student tested on the next grade up and didn't pass)? This determines whether the student stays in their current grade's skill plan or moves to the next grade's.
+
+**Step 2 — Determine the action tier.** Use the student's grade band and score to determine the intervention level:
+- *G3-5 same-grade below 80%:* Full S+P enrollment + all essays
+- *G3-5 test-out 70-89%:* Default full enrollment; override to targeted hole-filling only if the diagnostic gate passes (no fundamental gaps, Q11 >= 16/20, complete plan exists) *(Truth 3)*
+- *G6-8 same-grade below 80%:* All S+P + all 5 essays (hole-filling)
+- *G6-8 same-grade 80-89%:* Targeted S+P gaps + all 5 essays
+- *G6-8 test-out below 80%:* Full enrollment in next grade
+
+**Step 3 — Analyze each error.** For each incorrect question, read the root cause analysis to identify the specific deficit. Classify it as a sentence-level skill gap (MCQ Q1-10), a paragraph/essay production gap (Q11), or a reading comprehension deficit (flag but don't assign writing activities).
+
+**Step 4 — Build the scaffold.** Map each deficit to its complete lesson sequence. Every gap triggers a full prerequisite-to-production chain, not just the single lesson closest to the error *(Category 5, Constraint 6)*. Multi-lesson paragraph scaffolds conclude with a synthesis capstone *(Constraint 6b)*.
+
+**Step 5 — Apply constraints.** Before finalizing, enforce: positive competency detection (block lessons for skills already demonstrated), no essays in same-grade G6-8 hole-filling *(Truth 7)*, essay slot integrity (don't re-assign completed essays), deduplication (if multiple errors trigger the same lesson, include it once), and reading deficit flagging.
+
+**Step 6 — Validate.** Check that the plan is complete (all identified gaps are addressed), not redundant (no lessons for demonstrated competencies), and correctly ordered (skill plan sequence preserved).
+
+*For the full specification including scaffold sequences, keyword triggers, and decision trees, see: Writing Automation Rules — Complete.*
+
+---
+
 *Writing Hole-Filling & Test-Out Assignment Brainlift*
 *Version: 1.4*
 *Created: February 2026*
