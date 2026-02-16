@@ -477,6 +477,30 @@ This is a high-level map of the decision logic. Full implementation details, inc
 
 **Step 6 — Validate.** Check that the plan is complete (all identified gaps are addressed), not redundant (no lessons for demonstrated competencies), and correctly ordered (skill plan sequence preserved).
 
+#### The 10 Diagnostic Questions
+
+Before assigning any lesson, the agent must answer these 10 questions in order. Together they form a complete diagnostic chain — each question's answer feeds the next. The *Automation Rules* document contains the full implementation detail (keyword triggers, tier lookup tables, prerequisite chains); here we explain *what* each question asks and *why* it matters pedagogically.
+
+1. **What is the test type?** Same-grade failure or next-grade test-out? This determines the entire decision framework — same-grade failures always get targeted hole-filling, while test-out failures follow tier-based rules that may default to full enrollment.
+
+2. **What is the student's score, and which tier does it fall into?** The score places the student into an action tier that dictates whether the agent builds a targeted plan or assigns the full course. Without this gate, a student at 44% would receive the same intervention as a student at 87%.
+
+3. **Which specific questions did the student get wrong (or score below full marks)?** Every lesson in the hole-filling plan must trace back to a specific missed question. This ensures no "nice-to-have" lessons enter the plan and no actual gaps are overlooked.
+
+4. **For each missed question, what was the root cause of the error?** A wrong answer is a symptom; the root cause is the diagnosis. A blank response, a prompt compliance failure, a fundamental skill deficit, and a conventions-only error all demand different interventions. Treating them identically wastes student time.
+
+5. **Does the student need a prerequisite skill for any identified gap?** Assigning a skill without its prerequisite sets the student up to fail the activity — they'll struggle, lose confidence, and need the prerequisite anyway. The agent must check the prerequisite chains and the student's actual response to determine whether a recognition-level foundation must come first.
+
+6. **Are there patterns across multiple missed questions that indicate a systemic gap?** When errors cluster (e.g., fragments across multiple questions, conjunction misuse in both combining and subordinating tasks), the diagnosis shifts from "fix question X" to "fix the underlying skill." This may add a prerequisite but removes unnecessary downstream lessons.
+
+7. **For Q11 (Paragraph/Essay), is this a competence gap or a transfer gap?** A student who has completed and mastered the paragraph scaffold but fails Q11 has a transfer gap — they need independent practice, not more scaffolding. A student who has never completed the scaffold has a competence gap — they need the full sequence. Assigning the wrong type wastes time in both directions *(Category 4, Insight 5)*.
+
+8. **What is the minimum set of lessons that covers all identified gaps?** The plan must be lean. Each lesson maps to a diagnosed root cause or a required prerequisite. Duplicates are removed, encompassing activities are checked, and activities that address multiple gaps simultaneously are preferred.
+
+9. **Are all lessons available at the student's grade level in the Skill Plan?** A lesson that doesn't exist in the Skill Plan for the target grade will fail when assigned in Timeback. The agent must verify every recommended lesson against the actual Skill Plan data and substitute or remove any unavailable activities.
+
+10. **Is the final plan ordered correctly and does every lesson have a clear justification?** This is the quality gate. Lessons must follow Skill Plan order (Sentences before Paragraphs), prerequisites must precede the skills they support, every lesson must trace to a specific gap, and the plan must be the smallest set that covers all diagnosed deficits.
+
 *For the full specification including scaffold sequences, keyword triggers, and decision trees, see: Writing Automation Rules — Complete.*
 
 ---
@@ -486,4 +510,4 @@ This is a high-level map of the decision logic. Full implementation details, inc
 *Created: February 2026*
 *Owner: Noel Pilkington*
 
-*v1.4 Changes (Feb 16, 2026): Replaced blanket G3-5 full enrollment rule with diagnostic gate (Truth 3, Category 4) based on analysis of 8 test-out case studies showing that error type, not score, predicts optimal intervention. Softened Truth 6 MCQ rhetoric. Reframed Truth 10 from "worse than nothing" to "false coverage." Added conventions pattern exception to Myth 4. Added 80% threshold epistemic nuance to Category 8. Updated Myth 2 to distinguish surface-level from diagnostic hole-filling.*
+*v1.4 Changes (Feb 16, 2026): Replaced blanket G3-5 full enrollment rule with diagnostic gate (Truth 3, Category 4) based on analysis of 8 test-out case studies showing that error type, not score, predicts optimal intervention. Softened Truth 6 MCQ rhetoric. Reframed Truth 10 from "worse than nothing" to "false coverage." Added conventions pattern exception to Myth 4. Added 80% threshold epistemic nuance to Category 8. Updated Myth 2 to distinguish surface-level from diagnostic hole-filling. Added Decision Process Overview with 10 diagnostic questions, synthesis capstone insight (Insight 5), and Constraint 6b.*
